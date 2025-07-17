@@ -1,0 +1,2 @@
+2025-07-17 16:55:30,035 - INFO - --- INICIO DE LA AUTOMATIZACIÓN DE NÓMINA ---
+2025-07-17 16:55:30,043 - ERROR - Error crítico en el archivo 'config.ini'. Revisa la sintaxis y los nombres de secciones/opciones. Detalle: No section: 'Carpetas'

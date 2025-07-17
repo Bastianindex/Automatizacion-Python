@@ -1,0 +1,26 @@
+2025-07-17 16:51:36,619 - INFO - --- INICIO DE LA AUTOMATIZACIÓN DE NÓMINA ---
+2025-07-17 16:51:36,621 - INFO - Configuración cargada:
+2025-07-17 16:51:36,621 - INFO -   Archivo Excel de entrada: C:\Users\basti\OneDrive\Escritorio\proyecto CENCOSUD\Proyecto de Entrevista Practicante.xlsx
+2025-07-17 16:51:36,621 - INFO -   Archivo de salida: resultado_final.xlsx
+2025-07-17 16:51:36,621 - INFO -   Hoja base de empleados: Base
+2025-07-17 16:51:36,622 - INFO -   Meses de nómina a procesar: Enero, Febrero, Marzo
+2025-07-17 16:51:36,622 - INFO - --------------------------------------------------
+2025-07-17 16:51:36,785 - INFO - Archivo Excel de entrada cargado correctamente.
+2025-07-17 16:51:36,789 - INFO -   Hoja 'Enero' cargada.
+2025-07-17 16:51:36,791 - INFO -   Hoja 'Febrero' cargada.
+2025-07-17 16:51:36,793 - INFO -   Hoja 'Marzo' cargada.
+2025-07-17 16:51:36,794 - INFO - Datos mensuales unificados.
+2025-07-17 16:51:36,794 - INFO - Nombres de columnas del DataFrame principal limpiados.
+2025-07-17 16:51:36,796 - INFO - Tipos de datos convertidos (Sueldo_Base, Bono_%, Mes).
+2025-07-17 16:51:36,797 - INFO - Se eliminaron 9 filas duplicadas.
+2025-07-17 16:51:36,797 - INFO - Bono Calculado y Compensación Total calculados.
+2025-07-17 16:51:36,799 - INFO - Hoja 'Base' cargada.
+2025-07-17 16:51:36,799 - INFO - Nombres de columnas de la base de empleados limpiados.
+2025-07-17 16:51:36,800 - INFO - Tipo de dato 'Fecha_de_Ingreso' convertido.
+2025-07-17 16:51:36,801 - INFO - Datos de fecha de ingreso unidos al DataFrame principal.
+2025-07-17 16:51:36,803 - INFO - Antigüedad en meses calculada.
+2025-07-17 16:51:36,803 - INFO - Calculando métricas resumen...
+2025-07-17 16:51:36,804 - INFO - Métricas resumen calculadas.
+2025-07-17 16:51:36,864 - INFO - ¡Éxito! Archivo 'resultado_final.xlsx' generado correctamente con dos hojas: 'Datos Procesados' y 'Resumen Ejecutivo'.
+2025-07-17 16:51:36,864 - INFO - La automatización se ha completado. ¡Revisa el archivo de salida y el log!
+2025-07-17 16:51:36,864 - INFO - --- FIN DE LA AUTOMATIZACIÓN DE NÓMINA ---

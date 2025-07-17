@@ -1,0 +1,2 @@
+2025-07-17 17:03:30,407 - INFO - --- INICIO DE LA AUTOMATIZACIÓN DE NÓMINA ---
+2025-07-17 17:03:30,408 - ERROR - Error crítico: No se pudo leer el archivo de configuración 'config.ini'. Asegúrate de que esté en la misma carpeta que el script. Detalle: While reading from 'config.ini' [line 11]: section 'Archivos' already exists

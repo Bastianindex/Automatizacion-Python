@@ -1,0 +1,24 @@
+2025-07-17 16:50:35,150 - INFO - --- INICIO DE LA AUTOMATIZACIÓN DE NÓMINA ---
+2025-07-17 16:50:35,151 - INFO - Configuración cargada:
+2025-07-17 16:50:35,151 - INFO -   Archivo Excel de entrada: C:\Users\basti\OneDrive\Escritorio\proyecto CENCOSUD\Proyecto de Entrevista Practicante.xlsx
+2025-07-17 16:50:35,151 - INFO -   Archivo de salida: resultado_final.xlsx
+2025-07-17 16:50:35,151 - INFO -   Hoja base de empleados: Base
+2025-07-17 16:50:35,151 - INFO -   Meses de nómina a procesar: Enero, Febrero, Marzo
+2025-07-17 16:50:35,151 - INFO - --------------------------------------------------
+2025-07-17 16:50:35,315 - INFO - Archivo Excel de entrada cargado correctamente.
+2025-07-17 16:50:35,319 - INFO -   Hoja 'Enero' cargada.
+2025-07-17 16:50:35,321 - INFO -   Hoja 'Febrero' cargada.
+2025-07-17 16:50:35,323 - INFO -   Hoja 'Marzo' cargada.
+2025-07-17 16:50:35,324 - INFO - Datos mensuales unificados.
+2025-07-17 16:50:35,324 - INFO - Nombres de columnas del DataFrame principal limpiados.
+2025-07-17 16:50:35,326 - INFO - Tipos de datos convertidos (Sueldo_Base, Bono_%, Mes).
+2025-07-17 16:50:35,327 - INFO - Se eliminaron 9 filas duplicadas.
+2025-07-17 16:50:35,328 - INFO - Bono Calculado y Compensación Total calculados.
+2025-07-17 16:50:35,330 - INFO - Hoja 'Base' cargada.
+2025-07-17 16:50:35,330 - INFO - Nombres de columnas de la base de empleados limpiados.
+2025-07-17 16:50:35,331 - INFO - Tipo de dato 'Fecha_de_Ingreso' convertido.
+2025-07-17 16:50:35,334 - INFO - Datos de fecha de ingreso unidos al DataFrame principal.
+2025-07-17 16:50:35,335 - INFO - Antigüedad en meses calculada.
+2025-07-17 16:50:35,336 - INFO - Calculando métricas resumen...
+2025-07-17 16:50:35,337 - INFO - Métricas resumen calculadas.
+2025-07-17 16:50:35,370 - ERROR - Error al exportar el archivo Excel 'resultado_final.xlsx'. Detalle: [Errno 13] Permission denied: 'resultado_final.xlsx'

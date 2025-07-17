@@ -1,0 +1,28 @@
+2025-07-17 16:55:56,544 - INFO - --- INICIO DE LA AUTOMATIZACIÓN DE NÓMINA ---
+2025-07-17 16:55:56,553 - INFO - Carpeta de reportes 'C:\Users\basti\OneDrive\Escritorio\proyecto CENCOSUD\Automatizacion Python\Reportes' asegurada/creada.
+2025-07-17 16:55:56,553 - INFO - Configuración cargada:
+2025-07-17 16:55:56,554 - INFO -   Archivo Excel de entrada: C:\Users\basti\OneDrive\Escritorio\proyecto CENCOSUD\Proyecto de Entrevista Practicante.xlsx
+2025-07-17 16:55:56,554 - INFO -   Carpeta de reportes: C:\Users\basti\OneDrive\Escritorio\proyecto CENCOSUD\Automatizacion Python\Reportes
+2025-07-17 16:55:56,555 - INFO -   Archivo de salida completo: C:\Users\basti\OneDrive\Escritorio\proyecto CENCOSUD\Automatizacion Python\Reportes\resultado_final.xlsx
+2025-07-17 16:55:56,555 - INFO -   Hoja base de empleados: Base
+2025-07-17 16:55:56,555 - INFO -   Meses de nómina a procesar: Enero, Febrero, Marzo
+2025-07-17 16:55:56,555 - INFO - --------------------------------------------------
+2025-07-17 16:55:56,741 - INFO - Archivo Excel de entrada cargado correctamente.
+2025-07-17 16:55:56,745 - INFO -   Hoja 'Enero' cargada.
+2025-07-17 16:55:56,747 - INFO -   Hoja 'Febrero' cargada.
+2025-07-17 16:55:56,749 - INFO -   Hoja 'Marzo' cargada.
+2025-07-17 16:55:56,750 - INFO - Datos mensuales unificados.
+2025-07-17 16:55:56,751 - INFO - Nombres de columnas del DataFrame principal limpiados.
+2025-07-17 16:55:56,752 - INFO - Tipos de datos convertidos (Sueldo_Base, Bono_%, Mes).
+2025-07-17 16:55:56,754 - INFO - Se eliminaron 9 filas duplicadas.
+2025-07-17 16:55:56,754 - INFO - Bono Calculado y Compensación Total calculados.
+2025-07-17 16:55:56,756 - INFO - Hoja 'Base' cargada.
+2025-07-17 16:55:56,757 - INFO - Nombres de columnas de la base de empleados limpiados.
+2025-07-17 16:55:56,757 - INFO - Tipo de dato 'Fecha_de_Ingreso' convertido.
+2025-07-17 16:55:56,759 - INFO - Datos de fecha de ingreso unidos al DataFrame principal.
+2025-07-17 16:55:56,760 - INFO - Antigüedad en meses calculada.
+2025-07-17 16:55:56,760 - INFO - Calculando métricas resumen...
+2025-07-17 16:55:56,761 - INFO - Métricas resumen calculadas.
+2025-07-17 16:55:56,823 - INFO - ¡Éxito! Archivo 'C:\Users\basti\OneDrive\Escritorio\proyecto CENCOSUD\Automatizacion Python\Reportes\resultado_final.xlsx' generado correctamente con dos hojas: 'Datos Procesados' y 'Resumen Ejecutivo'.
+2025-07-17 16:55:56,823 - INFO - La automatización se ha completado. ¡Revisa el archivo de salida y el log!
+2025-07-17 16:55:56,823 - INFO - --- FIN DE LA AUTOMATIZACIÓN DE NÓMINA ---
