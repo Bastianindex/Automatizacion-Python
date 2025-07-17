@@ -1,27 +1,22 @@
 import pandas as pd
 import numpy as np
-import configparser # Para leer el archivo .ini
-import sys # Para salir del script en caso de errores críticos
+import configparser
+import sys
 
 # --- CONFIGURACIÓN ---
-# Inicializa el parser de configuración
 config = configparser.ConfigParser()
-
-# Intenta leer el archivo de configuración
 try:
     config.read('config.ini')
 except Exception as e:
     print(f"Error crítico: No se pudo leer el archivo de configuración 'config.ini'. Asegúrate de que esté en la misma carpeta que el script. Detalle: {e}")
-    sys.exit(1) # Sale del script con un código de error
+    sys.exit(1)
 
-# Obtiene los valores de configuración. Maneja errores si faltan secciones u opciones.
 try:
     ruta_excel_entrada = config.get('Archivos', 'ruta_excel')
     nombre_archivo_salida = config.get('Archivos', 'nombre_salida')
 
     nombre_hoja_base = config.get('Hojas', 'hoja_base')
     meses_nomina_str = config.get('Hojas', 'meses_nomina')
-    # Convierte la cadena de meses a una lista de cadenas, eliminando espacios extra
     meses_nomina = [m.strip() for m in meses_nomina_str.split(',')]
 except configparser.Error as e:
     print(f"Error crítico en el archivo 'config.ini'. Revisa la sintaxis y los nombres de secciones/opciones. Detalle: {e}")
@@ -40,12 +35,11 @@ try:
     print("Archivo Excel de entrada cargado correctamente.")
 except FileNotFoundError:
     print(f"Error: El archivo Excel no se encuentra en la ruta especificada en 'config.ini': {ruta_excel_entrada}")
-    sys.exit(1) # Sale del script si el archivo principal no se encuentra
+    sys.exit(1)
 except Exception as e:
     print(f"Error inesperado al intentar abrir el archivo Excel: {e}")
     sys.exit(1)
 
-# Lista para almacenar los DataFrames de los meses
 df_list = []
 for mes in meses_nomina:
     try:
@@ -53,29 +47,24 @@ for mes in meses_nomina:
         print(f"  Hoja '{mes}' cargada.")
     except Exception as e:
         print(f"  Advertencia: No se pudo cargar la hoja '{mes}'. Se ignorará esta hoja. Detalle: {e}")
-        # Continúa procesando las otras hojas aunque una falle
+        pass
 
-# Verifica si se cargó al menos una hoja de nómina
 if not df_list:
     print("Error: No se pudo cargar ninguna hoja de nómina mensual. Revisa los nombres de las hojas en 'config.ini' y el archivo Excel.")
     sys.exit(1)
 
-# Concatena todos los DataFrames mensuales en uno solo
 df_principal = pd.concat(df_list, ignore_index=True)
 print("Datos mensuales unificados.")
 
 # --- LIMPIEZA Y TRANSFORMACIÓN DEL DATAFRAME PRINCIPAL ---
-# Limpiar nombres de columnas: eliminar espacios al inicio/final y reemplazar espacios por guiones bajos
 df_principal.columns = df_principal.columns.str.strip().str.replace(' ', '_')
 print("Nombres de columnas del DataFrame principal limpiados.")
 
-# Convertir tipos de datos a numérico y datetime. 'errors='coerce'' convierte inválidos a NaN/NaT.
 df_principal['Sueldo_Base'] = pd.to_numeric(df_principal['Sueldo_Base'], errors='coerce')
 df_principal['Bono_%'] = pd.to_numeric(df_principal['Bono_%'], errors='coerce')
 df_principal['Mes'] = pd.to_datetime(df_principal['Mes'], errors='coerce')
 print("Tipos de datos convertidos (Sueldo_Base, Bono_%, Mes).")
 
-# Eliminar filas duplicadas para asegurar la unicidad de los registros
 initial_rows = len(df_principal)
 df_principal.drop_duplicates(inplace=True)
 if len(df_principal) < initial_rows:
@@ -83,7 +72,6 @@ if len(df_principal) < initial_rows:
 else:
     print("No se encontraron filas duplicadas.")
 
-# --- CÁLCULOS ADICIONALES PARA EL DATAFRAME PRINCIPAL ---
 df_principal['Bono_Calculado'] = df_principal['Sueldo_Base'] * df_principal['Bono_%']
 df_principal['Compensación_Total'] = df_principal['Sueldo_Base'] + df_principal['Bono_Calculado']
 print("Bono Calculado y Compensación Total calculados.")
@@ -96,43 +84,99 @@ except Exception as e:
     print(f"Error crítico: No se pudo cargar la hoja de empleados '{nombre_hoja_base}'. Detalle: {e}")
     sys.exit(1)
 
-# Limpiar nombres de columnas de la base de empleados
 df_base_empleados.columns = df_base_empleados.columns.str.strip().str.replace(' ', '_')
 print("Nombres de columnas de la base de empleados limpiados.")
 
-# Convertir la columna 'Fecha_de_Ingreso' a datetime
 df_base_empleados['Fecha_de_Ingreso'] = pd.to_datetime(df_base_empleados['Fecha_de_Ingreso'], errors='coerce')
 print("Tipo de dato 'Fecha_de_Ingreso' convertido.")
 
 # --- UNIR DATAFRAMES Y CALCULAR ANTIGÜEDAD ---
-# Realiza la unión (merge) de los DataFrames
-# Asegúrate que 'ID_empeado' es el nombre correcto en ambas hojas después de la limpieza
 df_final = df_principal.merge(df_base_empleados[['ID_empeado', 'Fecha_de_Ingreso']], on='ID_empeado', how='left')
 print("Datos de fecha de ingreso unidos al DataFrame principal.")
 
-# Función para calcular la diferencia de meses de forma precisa
 def calculate_months_diff(end_date, start_date):
     if pd.isna(end_date) or pd.isna(start_date):
-        return np.nan # Retorna NaN si alguna fecha es nula
-    # Calcula la diferencia total de meses (años * 12 + meses)
-    # Resta 1 si el día del mes final es menor que el día del mes inicial,
-    # indicando que el mes completo aún no se ha cumplido.
+        return np.nan
     return (end_date.year - start_date.year) * 12 + \
            (end_date.month - start_date.month) - \
            (end_date.day < start_date.day)
 
-# Aplica la función para calcular la antigüedad en meses
 df_final['Antigüedad_meses'] = df_final.apply(lambda row: calculate_months_diff(row['Mes'], row['Fecha_de_Ingreso']), axis=1)
-
-# Rellena los valores NaN en 'Antigüedad_meses' con 0 y convierte a entero
 df_final['Antigüedad_meses'] = df_final['Antigüedad_meses'].fillna(0).astype(int)
 print("Antigüedad en meses calculada.")
 
-# --- EXPORTAR RESULTADO FINAL ---
+# --- CÁLCULO DE MÉTRICAS RESUMEN ---
+print("\nCalculando métricas resumen...")
+total_registros = len(df_final)
+empleados_unicos = df_final['ID_empeado'].nunique()
+
+sueldo_base_promedio = df_final['Sueldo_Base'].mean()
+bono_porcentual_promedio = df_final['Bono_%'].mean()
+bono_calculado_promedio = df_final['Bono_Calculado'].mean()
+compensacion_total_promedio = df_final['Compensación_Total'].mean()
+
+antiguedad_promedio = df_final['Antigüedad_meses'].mean()
+antiguedad_minima = df_final['Antigüedad_meses'].min()
+antiguedad_maxima = df_final['Antigüedad_meses'].max()
+
+# Contar valores nulos en columnas clave
+nulos_sueldo_base = df_final['Sueldo_Base'].isnull().sum()
+nulos_bono_porcentual = df_final['Bono_%'].isnull().sum()
+nulos_mes = df_final['Mes'].isnull().sum()
+nulos_fecha_ingreso = df_final['Fecha_de_Ingreso'].isnull().sum()
+
+# Crear un DataFrame para el resumen
+resumen_data = {
+    'Métrica': [
+        'Total de Registros Procesados',
+        'Número de Empleados Únicos',
+        'Sueldo Base Promedio',
+        'Bono Porcentual Promedio',
+        'Bono Calculado Promedio',
+        'Compensación Total Promedio',
+        'Antigüedad Promedio (meses)',
+        'Antigüedad Mínima (meses)',
+        'Antigüedad Máxima (meses)',
+        'Registros con Sueldo Base Nulo',
+        'Registros con Bono % Nulo',
+        'Registros con Mes Nulo',
+        'Registros con Fecha de Ingreso Nula'
+    ],
+    'Valor': [
+        total_registros,
+        empleados_unicos,
+        f"{sueldo_base_promedio:,.2f}", # Formato de moneda
+        f"{bono_porcentual_promedio:.2%}", # Formato de porcentaje
+        f"{bono_calculado_promedio:,.2f}",
+        f"{compensacion_total_promedio:,.2f}",
+        f"{antiguedad_promedio:.2f}",
+        antiguedad_minima,
+        antiguedad_maxima,
+        nulos_sueldo_base,
+        nulos_bono_porcentual,
+        nulos_mes,
+        nulos_fecha_ingreso
+    ]
+}
+df_resumen = pd.DataFrame(resumen_data)
+print("Métricas resumen calculadas.")
+
+# --- EXPORTAR RESULTADO FINAL CON MÚLTIPLES HOJAS ---
 try:
     with pd.ExcelWriter(nombre_archivo_salida, engine='xlsxwriter', date_format='DD-MM-AAAA') as writer:
-        df_final.to_excel(writer, index=False)
-    print(f"\n¡Éxito! Archivo '{nombre_archivo_salida}' generado correctamente con formato de fecha DD-MM-AAAA.")
+        # Escribe el DataFrame principal en la primera hoja
+        df_final.to_excel(writer, sheet_name='Datos Procesados', index=False)
+
+        # Escribe el DataFrame de resumen en una segunda hoja
+        df_resumen.to_excel(writer, sheet_name='Resumen Ejecutivo', index=False)
+
+        # Opcional: Ajustar el ancho de las columnas en la hoja de resumen para que se vea mejor
+        workbook = writer.book
+        worksheet_resumen = writer.sheets['Resumen Ejecutivo']
+        worksheet_resumen.set_column('A:A', 35) # Ancho para la columna 'Métrica'
+        worksheet_resumen.set_column('B:B', 20) # Ancho para la columna 'Valor'
+
+    print(f"\n¡Éxito! Archivo '{nombre_archivo_salida}' generado correctamente con dos hojas: 'Datos Procesados' y 'Resumen Ejecutivo'.")
 except Exception as e:
     print(f"Error al exportar el archivo Excel '{nombre_archivo_salida}'. Detalle: {e}")
     sys.exit(1)
